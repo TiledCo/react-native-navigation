@@ -195,7 +195,18 @@
   
   [self setRotation:props];
   
+  // SA: fix for tabs not being hidden on intial load. The idea is that the tab bar will hide upon changing tabs
+  // and since initial load doesn't count as a tab change,  we force a change. Fix continued below.
+  [self setSelectedViewController:self.viewControllers[1]];
+  
   return self;
+}
+
+// SA: fix for hidden tabs
+- (void)viewWillAppear:(BOOL)animated {
+  [super viewWillAppear:animated];
+  
+  [self setSelectedViewController:self.viewControllers[0]];
 }
 
 - (void)performAction:(NSString*)performAction actionParams:(NSDictionary*)actionParams bridge:(RCTBridge *)bridge completion:(void (^)(void))completion
